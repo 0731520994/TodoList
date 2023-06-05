@@ -1,0 +1,21 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.main{
+    background-color: lightblue;
+    justify-content: center;
+    text-align: center;
+    margin: 4px;
+    padding: 4rem;
+   
+}
+
+.container{
+    justify-content: center;
+    text-align: center;
+}
+
+
+
