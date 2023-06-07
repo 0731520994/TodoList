@@ -97,4 +97,44 @@ function sortname() {
 
 
 
+const addBtn = document.querySelector('#add-btn');
 
+const sortBtn = document.querySelector('#sort-btn');
+
+const dotoinput = document.querySelector('#todo-input');
+
+const resultDisplay= document.querySelector('#result-display');
+let toDo =[];
+let temp = 1;
+
+addBtn.addEventListener('click', (event) =>{
+event.preventDefault();
+
+if (todolistInput === ' ')
+
+alert ('input is empty')
+else{
+
+}
+
+todoList.push({
+    id:temptID
+    name: todoOutput.value
+    completed:falsedate: new Date()
+
+})
+}
+tempID++;
+todovalue
+
+function renderlist(){
+    dodolist.array.forEach((item)=> {
+       resultDisplay.innerHTML += 
+       `
+       <div>
+        <input type = "checkbox" id =completed${item.id}>
+        <p>${item.name}</p>
+        <button id= "close-btn${item.id}">x</button>
+       </div>` 
+    });
+}
