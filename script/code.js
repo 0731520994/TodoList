@@ -1,140 +1,113 @@
-/*
-let list = [
-    {
-        id: '1',
-        name: 'Mongikazi',
-        createdDate: 'June 2023',
-        completed: '02 June 2023',
-    }
-
-*/
-
-
-// let addItemButton = document.getElementById("adding");
-// let taskInput = document.getElementById("input");
-// let sortingButton = document.getElementById('sorting');
-
-// addItemButton.addEventListener("click", (e) => {
-//     e.preventDefault();
-//     if (taskInput.value) {
-//         namelist.push(taskInput.value);
-//         taskInput.value = "";
-//     }
-// });
-
-// localStorage.setItem("names", JSON.stringify(namelist));
-
-// displayName.addEventListener('click'), (e) =>{
-//     namelist.forEach(name) =>{
-//         e.preventDefault output.innerHTML += 
-//         `
-//         <li>${mame}</li>`
-//     }
-// }
-
-// local storage
-
-let arrayname = JSON.parse(localStorage.getItem('arrayname')) || [];
-
-// Render to your array
-
-function functionname() {
-    let arrayname = document.getElementById('arrayname');
-    arrayname.innerHTML = '';
-
-    // put checkbox code
-
-
-
-    
-
-    // find a way to looop through your array
-
-
-
-}
-
-
-// function to save you elementa within the list
-
-function functionname() {
-    localStorage.setItem('', JSON.stringify());
-}
-
-// function to add item
-
-function addname() {
-    let add = document.getElementById('');
-    let newitem = add.ariaValueMax.trim();
-
-    // Function to toogle completion
-
-
-    // Remove completed elements
-
-
-}
-
-
-function sortname() {
-    // use your sort function to compare 
-
-
-    // apply some logic
-
-    
-    // Call functions
-
-
-}
-
-
-// Eventlistners for add and sort
-
-
-// Initial rendering
-
-
-
 
 const addBtn = document.querySelector('#add-btn');
-
 const sortBtn = document.querySelector('#sort-btn');
-
-const dotoinput = document.querySelector('#todo-input');
-
-const resultDisplay= document.querySelector('#result-display');
-let toDo =[];
-let temp = 1;
-
-addBtn.addEventListener('click', (event) =>{
-event.preventDefault();
-
-if (todolistInput === ' ')
-
-alert ('input is empty')
-else{
-
+const todoInput = document.querySelector('#todo-input');
+const resultDisplay = document.querySelector('#result-display');
+let todoList = JSON.parse(localStorage.getItem('todo-list')) ? JSON.parse(localStorage.getItem('todo-list')) : [];
+let tempID = todoList[todoList.length-1] ? todoList[todoList.length-1].id + 1: 1;
+let todoDeleteButtons;
+let todoCheckBoxes;
+let editButtons;
+addBtn.addEventListener('click', addItem);
+function addItem(){
+    event.preventDefault();
+    if(todoInput.value == ''){
+        alert('Input is Empty!')
+    } else {
+        todoList.push({
+            id: tempID,
+            name: todoInput.value,
+            completed: false,
+            date: new Date()
+        });
+        tempID++;
+        todoInput.value = '';
+        localStorage.setItem('todo-list', JSON.stringify(todoList));
+        renderList();
+    }
 }
-
-todoList.push({
-    id:temptID
-    name: todoOutput.value
-    completed:falsedate: new Date()
-
+sortBtn.addEventListener('click', sortItem)
+function sortItem(){
+    event.preventDefault();
+    todoList = todoList.sort((a,b)=>{
+        if(a.name < b.name){
+            return -1;
+        } else {
+            return 1;
+        }
+        return 0;
+    })
+    localStorage.setItem('todo-list', JSON.stringify(todoList))
+    renderList();
+}
+function deleteButtons(){
+    todoDeleteButtons = [...document.querySelectorAll('.close-btn')];
+    todoDeleteButtons.forEach((item)=>{
+        item.addEventListener('click',deleteItem)
+    })
+}
+function deleteItem(){
+    let startPoint = todoDeleteButtons.indexOf(event.target);
+    todoList.splice(startPoint, 1);
+    localStorage.setItem('todo-list', JSON.stringify(todoList))
+    renderList();
+}
+function checkBoxes(){
+    todoCheckBoxes = [...document.querySelectorAll('.todo-item-checkbox')];
+    todoCheckBoxes.forEach((item)=>{
+        item.addEventListener('click', checkBox)
+    })
+}
+function checkBox(){
+    let indexPosition = todoCheckBoxes.indexOf(event.target);
+    if(todoList[indexPosition].completed === true){
+        todoList[indexPosition].completed = false;
+    } else {
+        todoList[indexPosition].completed = true
+    }
+    renderList();
+}
+function editItem(){
+editButtons = [...document.querySelectorAll('.edit-btn')];
+editButtons.forEach((item)=>{
+    item.addEventListener('click', editTodoItem)
 })
 }
-tempID++;
-todovalue
-
-function renderlist(){
-    dodolist.array.forEach((item)=> {
-       resultDisplay.innerHTML += 
-       `
-       <div>
-        <input type = "checkbox" id =completed${item.id}>
-        <p>${item.name}</p>
-        <button id= "close-btn${item.id}">x</button>
-       </div>` 
-    });
+function editTodoItem(){
+    let newName = prompt('Enter new name:');
+    let index = editButtons.indexOf(event.target);
+    todoList[index].name = newName;
+    localStorage.setItem('todo-list', JSON.stringify(todoList));
+    renderList();
 }
+function renderList(){
+    resultDisplay.innerHTML = '';
+    todoList.forEach((item)=>{
+        if(item.completed === false){
+            resultDisplay.innerHTML += 
+            `
+            <div class="todo-item">
+                <input type="checkbox" id="completed${item.id}" class="todo-item-checkbox">
+                <p>${item.name}</p>
+                <button id="edit-btn${item.id}" class="edit-btn">Edit</button>
+                <button id="close-btn${item.id}" class="close-btn">X</button>
+            </div>
+            `
+        } else {
+            resultDisplay.innerHTML += 
+            `
+            <div class="todo-item">
+                <input type="checkbox" id="completed${item.id}" class="todo-item-checkbox" checked>
+                <p class="checked">${item.name}</p>
+                <button id="edit-btn${item.id}" class="edit-btn">Edit</button>
+                <button id="close-btn${item.id}" class="close-btn">X</button>
+            </div>
+            `
+        }
+    })
+    deleteButtons();
+    checkBoxes();
+    editItem();
+}
+renderList();
+
